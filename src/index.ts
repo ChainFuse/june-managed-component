@@ -40,7 +40,7 @@ export const getTrackEventArgs = (event: MCEvent): TrackParams => {
 		anonymousId: distinctId,
 		event: $event,
 		properties: customFields,
-		timestamp: event.client.timestamp ? new Date(event.client.timestamp * 1000) : new Date(),
+		timestamp: (event.client.timestamp ? new Date(event.client.timestamp * 1000) : new Date()).toISOString(),
 		context: getRequestBodyProperties(event),
 	};
 };
