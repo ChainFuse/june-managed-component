@@ -1,11 +1,11 @@
-import crypto from 'crypto'
+import crypto from 'crypto';
 
 beforeAll(() => {
-  vi.stubGlobal('crypto', crypto)
-})
+	vi.stubGlobal('crypto', crypto);
+});
 
 describe('june-so', () => {
-  it('example test', () => {
-    expect(true).toEqual(true)
-  })
-})
+	it('example test', () => {
+		expect(true).toEqual(true);
+	});
+});
