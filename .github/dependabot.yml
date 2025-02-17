@@ -1,0 +1,72 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: 'devcontainers'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'tuesday'
+      time: '12:00'
+      timezone: 'America/Los_Angeles'
+    open-pull-requests-limit: 999
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'tuesday'
+      time: '12:00'
+      timezone: 'America/Los_Angeles'
+    open-pull-requests-limit: 999
+    groups:
+      artifacts:
+        patterns:
+          - 'actions/*-artifact'
+      caches:
+        patterns:
+          - 'actions/cache'
+          - 'actions/cache/*'
+      sast:
+        patterns:
+          - 'github/codeql-*'
+          - 'actions/dependency-review-action'
+          - 'step-security/*'
+          - 'microsoft/security-devops-action'
+          - 'microsoft/DevSkim-Action'
+  - package-ecosystem: 'npm'
+    directory: '/'
+    registries: '*'
+    schedule:
+      interval: 'weekly'
+      day: 'tuesday'
+      time: '12:00'
+      timezone: 'America/Los_Angeles'
+    versioning-strategy: increase
+    open-pull-requests-limit: 999
+    groups:
+      cloudflare:
+        patterns:
+          - 'cloudflare'
+          - '@cloudflare/*'
+          - 'wrangler'
+          - '@managed-components/*'
+      typescript-core:
+        patterns:
+          - 'typescript'
+          - 'ts-node'
+          - '@swc/*'
+      typescript-types:
+        patterns:
+          - '@types/*'
+      code-management:
+        patterns:
+          - 'prettier'
+          - 'prettier-plugin-*'
+          - '@demosjarco/prettier-config'
+          - 'eslint'
+          - 'eslint-plugin-*'
+          - '@eslint/*'
+          - 'typescript-eslint'
