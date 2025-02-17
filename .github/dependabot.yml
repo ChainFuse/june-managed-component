@@ -53,10 +53,13 @@ updates:
           - '@cloudflare/*'
           - 'wrangler'
           - '@managed-components/*'
+        exclude-patterns:
+          - '@cloudflare/workers-types'
       typescript-core:
         patterns:
           - 'typescript'
           - 'ts-node'
+          - '@cloudflare/workers-types'
       typescript-types:
         patterns:
           - '@types/*'
