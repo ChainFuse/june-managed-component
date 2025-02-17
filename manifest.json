@@ -12,5 +12,14 @@
 			"description": "June uses serverside network requests to report data",
 			"required": true
 		}
-	}
+	},
+	"fields": [
+		{
+			"name": "JUNE_WRITE_KEY",
+			"type": "text",
+			"label": "PostHog Personal API Key",
+			"description": "Your PostHog API key. You can find this in your PostHog project settings",
+			"required": true
+		}
+	]
 }
