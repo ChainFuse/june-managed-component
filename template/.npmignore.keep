@@ -1,8 +1,0 @@
-.all-contributorsrc
-.eslintrc.js
-.github
-.prettierrc
-esbuild.js
-tsconfig.build.json
-tsconfig.json
-coverage

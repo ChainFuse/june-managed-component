@@ -4,7 +4,7 @@ beforeAll(() => {
   vi.stubGlobal('crypto', crypto)
 })
 
-describe('{{ namespace }}', () => {
+describe('june-so', () => {
   it('example test', () => {
     expect(true).toEqual(true)
   })
