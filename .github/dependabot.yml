@@ -57,7 +57,6 @@ updates:
         patterns:
           - 'typescript'
           - 'ts-node'
-          - '@swc/*'
       typescript-types:
         patterns:
           - '@types/*'
