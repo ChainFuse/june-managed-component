@@ -6,18 +6,9 @@ import type { IncomingRequestCfPropertiesGeographicInformation } from '@cloudfla
 
 const getRequestBodyProperties = (event: MCEvent) => {
 	const { client, payload } = event;
-	const { $identified_id } = payload;
 	const { browser, os, device } = new UAParser(event.client.userAgent).getResult();
 
-	const distinctId = client.get('distinct_id') ?? crypto.randomUUID();
-	// Save just in case
-	client.set('distinct_id', distinctId);
-
 	return {
-		$device_id: distinctId,
-		distinct_id: $identified_id ?? distinctId,
-		time: client.timestamp,
-		$insert_id: crypto.randomUUID(),
 		ip: client.ip,
 		$referrer: client.referer || '$direct',
 		$referring_domain: isValidHttpUrl(client.referer) ? new URL(client.referer).host : '$direct',
@@ -40,10 +31,13 @@ const getRequestBodyProperties = (event: MCEvent) => {
 
 export const getTrackEventArgs = (event: MCEvent): TrackParams => {
 	const { $sr, $identified_id, event: $event, timestamp, ...customFields } = event.payload;
-	const body = getRequestBodyProperties(event);
+
+	const distinctId = event.client.get('distinct_id') ?? crypto.randomUUID();
+	// Save just in case
+	event.client.set('distinct_id', distinctId);
 
 	return {
-		anonymousId: body.distinct_id,
+		anonymousId: distinctId,
 		event: $event,
 		properties: customFields,
 		timestamp: event.client.timestamp ? new Date(event.client.timestamp * 1000) : new Date(),
