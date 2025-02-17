@@ -20,6 +20,13 @@
 			"label": "PostHog Personal API Key",
 			"description": "Your PostHog API key. You can find this in your PostHog project settings",
 			"required": true
+		},
+		{
+			"name": "USER_LOCATION",
+			"type": "boolean",
+			"label": "User location",
+			"description": "Get exact user location, otherwise approximate to nearest CF POP",
+			"required": false
 		}
 	]
 }
