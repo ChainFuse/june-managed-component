@@ -60,12 +60,36 @@ export default async function (manager: Manager, settings: ComponentSettings) {
 
 	async function getServerLocation(identifiedId: string) {
 		// Use cache to device id (random uuid) to reduce rate limit issues (Cf rate ttl is 5 min)
-		const { postalCode, city, region, metroCode, country, continent } = (await manager.useCache(`loc_${identifiedId}`, () => manager.fetch(new URL('cf.json', 'https://workers.cloudflare.com'))!.then((response) => response.json()), 5 * 60)) as IncomingRequestCfPropertiesGeographicInformation;
+		const { postalCode, city, region, metroCode, timezone, country, continent } = (await manager.useCache(`loc_${identifiedId}`, () => manager.fetch(new URL('cf.json', 'https://workers.cloudflare.com'))!.then((response) => response.json()), 5 * 60)) as IncomingRequestCfPropertiesGeographicInformation;
 
-		return { postalCode, city, region, metroCode, country, continent };
+		return { postalCode, city, region, metroCode, timezone, country, continent };
 	}
 
-	manager.addEventListener('pageview', (event) => {});
+	manager.addEventListener('pageview', async (event) => {
+		const { os, device } = new UAParser(event.client.userAgent).getResult();
+		const distinctId = event.client.get('distinct_id') ?? crypto.randomUUID();
+		// Save just in case
+		event.client.set('distinct_id', distinctId);
+
+		await manager.fetch(new URL('sdk/page', 'https://api.june.so'), {
+			method: 'POST',
+			body: JSON.stringify({
+				properties: {
+					device,
+					ip: event.client.ip,
+					os,
+					referrer: isValidHttpUrl(event.client.referer) ? new URL(event.client.referer).host : 'direct',
+					screen: {
+						height: event.client.screenHeight,
+						width: event.client.screenWidth,
+					},
+					timezone: (await getServerLocation(distinctId)).timezone,
+					userAgent: event.client.userAgent,
+				},
+				anonymousId: distinctId,
+			}),
+		});
+	});
 	manager.addEventListener('track', async (event) => {
 		const args = getTrackEventArgs(event);
 
